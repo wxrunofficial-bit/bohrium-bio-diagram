@@ -1,0 +1,11 @@
+{
+  "case_id": "example-synthetic-chart",
+  "kind": "line",
+  "title": "Illustrative time series",
+  "x": "time",
+  "y": "value",
+  "group": "series",
+  "x_label": "Time (arbitrary units)",
+  "y_label": "Signal (arbitrary units)",
+  "source_locator": "examples/chart.csv, rows 2–7. Synthetic values for interface demonstration."
+}
