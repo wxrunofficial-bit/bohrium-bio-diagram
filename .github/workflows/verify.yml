@@ -1,0 +1,48 @@
+name: Verify pathway skill
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify public access to the exact Skill without credentials
+        env:
+          RELEASE_REF: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python - <<'PY'
+          import json, os, pathlib, urllib.request
+          repo = os.environ["GITHUB_REPOSITORY"]
+          root = pathlib.Path(".")
+          assert (root/"GITHUB_URL.txt").read_text().strip() == "https://github.com/"+repo
+          with urllib.request.urlopen("https://api.github.com/repos/"+repo, timeout=20) as response:
+              assert json.load(response)["private"] is False
+          for file in ("SKILL.md", "GITHUB_URL.txt", "scripts/edge_scale.py", "examples/feedback.csv"):
+              url = f"https://raw.githubusercontent.com/{repo}/{os.environ['RELEASE_REF']}/{file}"
+              with urllib.request.urlopen(url, timeout=20) as response:
+                  assert response.read() == (root/file).read_bytes(), file
+          print("Anonymous access verified for the repository and four exact release files.")
+          PY
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install renderers and PDF inspection tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq poppler-utils librsvg2-bin
+          python -m pip install 'matplotlib>=3.8,<4' 'Pillow>=10,<14'
+      - name: Render, compare and test failure handling
+        env:
+          MPLBACKEND: Agg
+        run: |
+          git worktree add --detach "$RUNNER_TEMP/previous" 710d8841cd2be4f7c9a7ce6569def37dfec49946
+          python -B verification/check_release.py --output "$RUNNER_TEMP/figures" --previous "$RUNNER_TEMP/previous"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verification-results
+          path: ${{ runner.temp }}/figures

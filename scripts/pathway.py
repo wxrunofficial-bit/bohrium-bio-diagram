@@ -69,10 +69,18 @@ def build(args):
             result['status'] = 'complete'
             return finish(out,result,errors,args)
         if args.mode == 'draw':
-            root, notes = graph.render(data)
+            import edge_scale
+            mapping = edge_scale.read(data, args.edge_table)
+            root, notes = graph.render(data, mapping)
             result['checks']['graph'] = {'evidence_reference_check': 'passed',
                 'nodes': len(data['nodes']), 'edges': len(data.get('edges', [])), 'layout_findings': notes}
-            result['sources'] = data['sources']
+            result['sources'] = list(data['sources'])
+            if mapping:
+                map_path = out/'edge_mapping.json'
+                write_json(map_path, mapping)
+                result['artifacts'].append(artifact(map_path,out,'data_provenance'))
+                result['sources'].append({'document':mapping['source'], 'sha256':mapping['sha256'],
+                                          'locator':map_path.name+' / rows'})
             graph_file = out/'graph.json'
             write_json(graph_file, data)
             result['artifacts'].append(artifact(graph_file, out, 'evidence_linked_graph'))
@@ -97,6 +105,11 @@ def build(args):
             svgtools.write_svg(root, checked_svg)
             root = svgtools.read_svg(checked_svg)
             svgtools.summarize(root)
+            if args.mode == 'draw':
+                import audit_figure
+                review = audit_figure.verify(root, data, mapping)
+                result['checks']['visible_semantics'] = review
+                result['uncertainties'].extend(review['findings'])
             checked_svg.replace(svg)
         result['artifacts'].append(artifact(svg, out, 'editable_svg'))
         result['status'] = 'partial'
@@ -105,7 +118,7 @@ def build(args):
             result['artifacts'].extend(artifact(svg.with_suffix(ext), out, role)
                                        for ext, role in [('.png','rendered_png'),('.pdf','rendered_pdf')])
             if not any(n.get('kind') in {'route_obstruction', 'label_needs_position'}
-                       for n in result['checks'].get('graph', {}).get('layout_findings', [])):
+                       for n in result['checks'].get('graph', {}).get('layout_findings', [])) and result['checks'].get('visible_semantics', {}).get('passed', True):
                 result['status'] = 'complete'
         else:
             result['uncertainties'].append({'kind': 'export_not_run', 'detail': 'SVG-only mode requested'})
@@ -150,6 +163,8 @@ def main():
         command.add_argument('--case-fields', type=Path, help='JSON object with extra case-specific contract fields')
         command.add_argument('--scale', type=float, default=1.5, help='PNG scale relative to the SVG viewport')
         command.set_defaults(svg_only=False)
+        if mode == 'draw':
+            command.add_argument('--edge-table', type=Path, help='source CSV keyed by edge ID for continuous line widths')
         if mode != 'chart':
             command.add_argument('--svg-only', action='store_true', help='retain an intermediate SVG and mark the run partial')
         if mode != 'draw':

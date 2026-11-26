@@ -1,6 +1,7 @@
 """Edit existing SVGs without recomposition and render real preview files."""
 
 import hashlib
+import io
 import importlib.util
 import os
 import re
@@ -194,7 +195,32 @@ def verify_exports(png, pdf, width, height):
         white.alpha_composite(rgba)
         if all(lo == hi for lo, hi in white.convert('RGB').getextrema()):
             raise ValueError('PNG has no visible content')
-    return {'png_pixels': list(size), 'png_nonblank_check': 'passed', 'pdf_checks': ['signature', 'EOF']}
+    checks = {'png_pixels': list(size), 'png_nonblank_check': 'passed', 'pdf_checks': ['signature', 'EOF'],
+              'pdf_raster_check': 'not_run'}
+    info, raster = shutil.which('pdfinfo'), shutil.which('pdftoppm')
+    if info and raster:
+        env = dict(os.environ, LC_ALL='C', LANG='C')
+        def poppler(cmd):
+            p = subprocess.run(cmd, capture_output=True, timeout=35, env=env)
+            if p.returncode:
+                raise ValueError('PDF inspection failed: '+p.stderr.decode(errors='replace')[:300])
+            return p.stdout
+        meta = poppler([info, str(pdf)]).decode(errors='replace')
+        if not re.search(r'^Pages:\s+1\s*$', meta, re.M):
+            raise ValueError('expected a single-page figure PDF')
+        bitmap = poppler([raster, '-f','1','-l','1','-singlefile','-scale-to','384','-png',str(pdf)])
+        with Image.open(io.BytesIO(bitmap)) as page:
+            preview = page.convert('RGB')
+        if all(a==b for a,b in preview.getextrema()):
+            raise ValueError('PDF renders to an empty page')
+        if abs(preview.width/preview.height/(width/height)-1) > max(.02, 2/min(preview.size)):
+            raise ValueError('rasterized PDF and requested PNG have different aspect ratios')
+        from PIL import ImageChops, ImageStat
+        delta = ImageChops.difference(white.convert('RGB').resize(preview.size, Image.Resampling.LANCZOS), preview)
+        checks.update(pdf_raster_check='passed', pdf_preview_pixels=list(preview.size),
+                      pdf_png_mean_abs_rgb_0_to_255=round(sum(ImageStat.Stat(delta).mean)/3,3))
+        checks['pdf_checks'] += ['single_page','raster_nonblank','aspect_ratio']
+    return checks
 
 
 def export(svg, root, scale):
