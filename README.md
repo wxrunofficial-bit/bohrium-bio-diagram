@@ -57,3 +57,11 @@ For a numeric line scale use `edge_scale.label`, `unit`, `domain`, `range_px`, `
 When Pillow and Poppler's `pdfinfo` and `pdftoppm` are installed, the exporter checks that the PDF contains one page, renders to a nonblank bitmap, and matches the requested aspect ratio. It records the mean absolute RGB difference against the resized PNG in 0–255 levels. Inspect visible differences and glyph coverage at the final display size. Minimal environments retain the available checks in result.json.
 
 Report reproducible issues through the public repository, including the command, package revision, sanitized minimal inputs, and renderer. Keep private case data out of public issues.
+
+## Independent release check
+
+On the same synthetic feedback graph and table, the previous public release (710d8841) encoded 0 of 3 prescribed widths correctly; this revision encoded all 3. Three successive renders produced the same SVG SHA-256. The mutation check caught each of eight deliberately introduced SVG errors. The four rejection cases cover missing rows, duplicate keys, an out-of-domain value and a nonfinite value. Four public examples produced editable SVG, PNG and PDF. These are regression results on illustrative material; the platform supplies its own cases and baseline.
+
+Reproduce with `python -B verification/check_release.py --output verification-output` from the repository root. To include the historical comparison, add `--previous PATH_TO_710d8841_CHECKOUT`. The submission includes the examples and standalone figure checker. The release verification script runs independently of the drawing CLI. Build receipts and author-side session logs are kept separately from the public Skill.
+
+[Linux verification log and downloadable example figures](https://github.com/wxrunofficial-bit/bohrium-bio-diagram/actions/runs/45827941734)
