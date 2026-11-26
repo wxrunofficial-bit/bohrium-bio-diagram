@@ -26,7 +26,7 @@ On Windows, use writable Windows paths instead of `/tmp` and use the installed P
 | `uncertainties[]` | Optional list of explicit scope or evidence limitations. |
 | `encoding` | Optional categorical fill mapping, with `channel: "node_fill"`, `label`, and `categories` entries containing `id`, `label`, `fill` as six-digit hex. For mapped nodes, use `category` and cite the source record supporting the mapping. |
 
-Use left-to-right slots for the main cascade and separate rows for branches. Use native SVG markers and shared relation text where appropriate for your workorder. The bundled rendering uses an arrow for `activation` and `modification`, a bar for `inhibition`, a hollow arrow for `transport`, and no directional head for `binding` or `association`. Use an action label for modifications. Use `indirect` for a multi-step directed relation and `certainty: "proposed"` or `"unknown"` for dotted uncertainty when a relationship can be responsibly shown. Set manual routing with SVG coordinate pairs in `via` and one or both ports (`top`, `bottom`, `left`, `right`) for loops or special routes. This editor's categorical legend is generated from the same color table used for fills. Use a separate plotting script for continuous scales and quantitative plots.
+Use left-to-right slots for the main cascade and separate rows for branches. Use native SVG markers and shared relation text where appropriate for your workorder. The bundled rendering uses an arrow for `activation` and `modification`, a bar for `inhibition`, a hollow arrow for `transport`, and no directional head for `binding` or `association`. Use an action label for modifications. Use `indirect` for a multi-step directed relation and `certainty: "proposed"` or `"unknown"` for dotted uncertainty when a relationship can be responsibly shown. Set manual routing with SVG coordinate pairs in `via` and one or both ports (`top`, `bottom`, `left`, `right`) for loops or special routes. This editor's categorical legend is generated from the same color table used for fills. For continuous edge weights, use the CSV join below. Use chart mode for a standalone quantitative panel.
 
 ## Edit or export
 
@@ -39,3 +39,21 @@ After running a formal case, map actual fields to its `output_contract`; `--case
 ## Plot supplied tabular values
 
 `chart` takes a JSON specification and a UTF-8 CSV. Select `kind` (`line`, `scatter`, `bar`), `x` and `y` column names, `title`, `x_label`, `y_label` and `source_locator`. Optionally set `group`, `error` (a supplied symmetric error width) and `error_label`, `y_limits` or `missing: "skip"` for explicitly allowed omissions. Lines sort numeric x within each group. Bar categories follow source order and axes include zero. Duplicate x positions within a line/bar group, clipping limits, missing values and nonfinite numbers are rejected unless the case explicitly allows missing rows. `source_mapping.json` retains the input hash and each plotted row's original line and value. The illustrative CSV contains synthetic example numbers.
+
+## Quantitative edges and semantic checks
+
+In `examples/feedback.json`, a fictional cue activates a membrane relay and a proposed feedback edge inhibits it. The adjoining CSV deliberately places rows in a different order from the graph. Join the interaction ID to the source row. The declared domain [0, 1] maps linearly to widths [1.5, 6.5] in SVG units. The output preserves the CSV hash, column names, original row numbers, units, data values and widths. The legend uses the same scale. Missing, repeated, unrecognized, nonfinite and out-of-domain measurements stop drawing with the affected ID or line. Additional non-edge rows should be filtered into a documented case-specific table first; retain the unmodified source and the extraction rule.
+
+```sh
+python3 -B scripts/pathway.py draw examples/feedback.json --edge-table examples/feedback.csv --output /tmp/pathway-feedback
+python3 -B scripts/audit_figure.py examples/feedback.json /tmp/pathway-feedback/figure.svg --edge-table examples/feedback.csv
+python3 -B examples/check_feedback.py /tmp/pathway-feedback
+```
+
+The expected illustrative widths are 2.5 for feedback, 6 for trigger and 4 for forward. The standalone audit rereads the SVG and checks visible labels, gene/protein classes declared by the graph, compartment placement, source and target attachments, terminal shape and rotation, legend swatches, line patterns, numeric ticks, and provenance references. Scientific interpretation still needs a source review. The corruption exercise makes independent in-memory edits to a copy of the SVG. It tests wrong direction, a lost inhibition bar, a missing uncertainty pattern, a displaced glyph, a wrong legend color, unit, line width and entity label.
+
+For a numeric line scale use `edge_scale.label`, `unit`, `domain`, `range_px`, `id_column` and `value_column`. The span must increase, widths must fall within 1–9 SVG units, and every drawn edge must have exactly one supplied measurement. Signed values can use a declared signed domain. Interpret sign separately if the source uses it for regulation. Keep absent measurements distinct from measured zero. For channels such as continuous fill and per-node size use the case's plotting tools and verify the resulting glyphs against the table.
+
+When Pillow and Poppler's `pdfinfo` and `pdftoppm` are installed, the exporter checks that the PDF contains one page, renders to a nonblank bitmap, and matches the requested aspect ratio. It records the mean absolute RGB difference against the resized PNG in 0–255 levels. Inspect visible differences and glyph coverage at the final display size. Minimal environments retain the available checks in result.json.
+
+Report reproducible issues through the public repository, including the command, package revision, sanitized minimal inputs, and renderer. Keep private case data out of public issues.

@@ -1,0 +1,31 @@
+name: Verify pathway skill
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install renderers and PDF inspection tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq poppler-utils librsvg2-bin
+          python -m pip install 'matplotlib>=3.8,<4' 'Pillow>=10,<14'
+      - name: Render, compare and test failure handling
+        env:
+          MPLBACKEND: Agg
+        run: |
+          git worktree add --detach "$RUNNER_TEMP/previous" 710d8841cd2be4f7c9a7ce6569def37dfec49946
+          python -B verification/check_release.py --output "$RUNNER_TEMP/figures" --previous "$RUNNER_TEMP/previous"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verification-results
+          path: ${{ runner.temp }}/figures

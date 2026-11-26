@@ -17,7 +17,7 @@ FONT = 'Arial, Liberation Sans, Noto Sans CJK SC, sans-serif'
 TYPES = {
     'activation': ('#087c68', 'Activation', 'arrow', ''),
     'inhibition': ('#a43350', 'Inhibition', 'bar', ''),
-    'binding': ('#7645a4', 'Binding / association', 'none', ''),
+    'binding': ('#7645a4', 'Binding', 'none', ''),
     'modification': ('#986013', 'Modification', 'arrow', ''),
     'transport': ('#2565ad', 'Transport', 'open', ''),
     'indirect': ('#56687f', 'Indirect / multistep', 'arrow', '7 5'),
@@ -83,7 +83,7 @@ def validate(graph):
         if not lane.get('label') or not isinstance(lane.get('rows', 1), int) or not 1 <= lane.get('rows', 1) <= 10:
             raise ValueError(f'{key}: lane needs a label and between 1 and 10 rows')
     for key, item in {**nodes, **edges}.items():
-        if not item.get('evidence') or any(ref not in sources for ref in item['evidence']):
+        if not isinstance(item.get('evidence'), list) or not item['evidence'] or any(ref not in sources for ref in item['evidence']):
             raise ValueError(f'{key}: missing or unknown evidence ID')
         if item.get('certainty', 'observed') not in EVIDENCE:
             raise ValueError(f'{key}: invalid certainty')
@@ -106,6 +106,13 @@ def validate(graph):
     for key, edge in edges.items():
         if edge.get('relation') not in TYPES or edge.get('source') not in nodes or edge.get('target') not in nodes:
             raise ValueError(f'{key}: unknown relation or endpoint')
+        for face in ('source_port', 'target_port'):
+            if face in edge and edge[face] not in {'left','right','top','bottom'}:
+                raise ValueError(f'{key}: invalid {face}')
+        if 'via' in edge and (not isinstance(edge['via'], list) or not edge['via'] or any(
+                not isinstance(p, list) or len(p) != 2 or any(type(v) not in (int,float) or not math.isfinite(v) for v in p)
+                for p in edge['via'])):
+            raise ValueError(f'{key}: via needs finite x,y point pairs')
         if edge['source'] == edge['target'] and 'via' not in edge:
             raise ValueError(f'{key}: self-loop requires explicit via points')
     return sources, lanes, nodes, edges
@@ -196,14 +203,14 @@ def route(edge, boxes, earlier, bounds):
     return segments(path), cost(path)
 
 
-def draw_edge(group, lines, relation, certainty='observed'):
+def draw_edge(group, lines, relation, certainty='observed', width=2.7):
     color, _, marker, dash = TYPES[relation]
     if not lines:
         raise ValueError('edge path has zero length')
     dash = '3 5' if certainty in {'proposed', 'unknown'} else dash
     path = [lines[0][0], *(b for _, b in lines)]
     element(group, 'polyline', points=' '.join(f'{x:g},{y:g}' for x,y in path), fill='none',
-            stroke=color, stroke_width=2.7, stroke_dasharray=dash or 'none', stroke_linejoin='round')
+            stroke=color, stroke_width=width, stroke_dasharray=dash or 'none', stroke_linejoin='round')
     if marker == 'none':
         return
     start, tip = lines[-1]
@@ -217,7 +224,7 @@ def draw_edge(group, lines, relation, certainty='observed'):
         element(head, 'path', d='M0,0 L-10,-5 L-10,5 Z', fill=color)
 
 
-def render(graph):
+def render(graph, mapping=None):
     _, lanes, nodes, edges = validate(graph)
     width = max(790, LEFT + max(n['column'] for n in nodes.values()) * DX + W + 60)
     lane_y = {}
@@ -269,7 +276,8 @@ def render(graph):
             notes.append({'kind': 'edge_crossing_or_overlap', 'id': key, 'count': score[1]})
         g = element(edge_layer, 'g', id=f'edge-{key}', data_evidence=' '.join(edge['evidence']),
                     data_relation=edge['relation'], data_source=edge['source'], data_target=edge['target'])
-        draw_edge(g, lines, edge['relation'], edge.get('certainty', 'observed'))
+        draw_edge(g, lines, edge['relation'], edge.get('certainty', 'observed'),
+                  mapping['rows'][key]['width'] if mapping else 2.7)
         earlier.extend(lines)
         if edge.get('label'):
             edge_labels[key] = (lines, edge['label'])
@@ -341,17 +349,25 @@ def render(graph):
         legend_items.append(('activation', 'Dotted · uncertain', 'proposed'))
     for i,(name,label,certainty) in enumerate(legend_items):
         x,y = 40+(i%ncols)*229, cursor+46+(i//ncols)*28
-        draw_edge(legend, [((x,y),(x+31,y))], name, certainty)
-        text(legend, x+41, y+5, label, 13)
+        swatch = element(legend, 'g', id='key-'+(name if certainty=='observed' else 'uncertainty'))
+        if certainty == 'observed':
+            draw_edge(swatch, [((x,y),(x+31,y))], name)
+        else:
+            element(swatch, 'polyline', points=f'{x},{y} {x+31},{y}', fill='none',
+                    stroke='#56687f', stroke_width=2.7, stroke_dasharray='3 5')
+        text(swatch, x+41, y+5, label, 13)
     if categories:
         legend_top = cursor+54+math.ceil(len(legend_items)/ncols)*28
         text(legend, 38, legend_top, encoding['label'], 15, weight=700)
         for i,c in enumerate(categories.values()):
             x,y = 40+(i%ncols)*229, legend_top+24+(i//ncols)*28
-            element(legend, 'rect', x=x, y=y-12, width=19, height=15, rx=3, fill=c['fill'], stroke='#62788b')
-            text(legend, x+27, y, c['label'], 13)
+            element(legend, 'rect', id='key-category-'+c['id'], x=x, y=y-12, width=19, height=15, rx=3, fill=c['fill'], stroke='#62788b')
+            text(legend, x+27, y, c['label'], 13, id='key-category-label-'+c['id'])
         height = max(height, legend_top+35+math.ceil(len(categories)/ncols)*28)
         root.set('height', str(height))
         root.set('viewBox', f'0 0 {width} {height}')
         back[0].set('height', str(height))
+    if mapping:
+        import edge_scale
+        edge_scale.legend(root, legend, mapping)
     return root, notes
