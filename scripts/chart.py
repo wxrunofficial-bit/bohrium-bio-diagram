@@ -71,7 +71,7 @@ def render(spec, csv_path, out, scale):
         raise ValueError('chart export exceeds pixel budget')
     fig, ax = plt.subplots(figsize=(width/96,height/96), dpi=96, layout='constrained')
     try:
-        ax.set(title=spec['title'],xlabel=spec['x_label'],ylabel=spec['y_label'])
+        ax.set(xlabel=spec['x_label'], ylabel=spec['y_label'])
         for side in ('top','right'):
             ax.spines[side].set_visible(False)
         ax.grid(axis='y', color='#dce5ee', linewidth=.7)
@@ -95,8 +95,10 @@ def render(spec, csv_path, out, scale):
             ax.legend(frameon=False)
         if spec.get('y_limits'):
             ax.set_ylim(*spec['y_limits'])
-        if spec.get('error_label'):
-            ax.set_title(f"{spec['title']}\nError bars: {spec['error_label']}",loc='left')
+        title = spec['title']
+        if 'error' in spec:
+            title += f"\nError bars: {spec['error_label']}"
+        ax.set_title(title)
         svg,png,pdf = (out/f'figure.{ext}' for ext in ('svg','png','pdf'))
         with matplotlib.rc_context({'svg.fonttype':'none','svg.hashsalt':'evidence-chart','pdf.fonttype':42}):
             fig.savefig(svg, format='svg', metadata={'Date':None})
