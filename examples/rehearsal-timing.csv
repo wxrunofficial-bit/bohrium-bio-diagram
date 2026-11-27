@@ -1,0 +1,7 @@
+slide,section,start_seconds,end_seconds,duration_seconds,spoken_seconds,visual_seconds,slack_seconds,next_slide,role,claim,transition
+1,main,0,22,22,13.7,0,8.3,compare,question,The same fit can hide four stories,First compare the statistics Anscombe chose to hold nearly equal.
+2,main,22,58,36,14.9,0,21.1,patterns,quantities,The four datasets share a rounded fit,"A constant-looking fit controls the summaries, so compare coordinates next."
+3,main,58,130,72,20.7,12,39.3,leverage,evidence,Common axes reveal four distinct patterns,Now distinguish response outliers from leverage in the predictor.
+4,main,130,177,47,17.4,0,29.6,takeaway,interpretation,One observation determines the slope in IV,This establishes what a projection of coefficients alone cannot tell us.
+5,main,177,204,27,12.4,0,14.6,,conclusion,Plot the observations before interpreting a fit,Close the talk or proceed to the appendix for descriptive statistics.
+6,appendix,,,27,12.0,0,15.0,,conclusion,Ten observations share the same x value,Return to the comparison if further evidence is requested.

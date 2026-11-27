@@ -1,0 +1,14 @@
+{
+  "scope": "Local public fixture only",
+  "topic": "story",
+  "checked": {
+    "editable_slides": 6,
+    "main_talk_seconds": 204,
+    "reserve_seconds": 26,
+    "overfull_script_flagged": true
+  },
+  "output_contract": {
+    "valid_nested_fields_pass": true,
+    "missing_nested_evidence_and_outside_path_rejected": true
+  }
+}
