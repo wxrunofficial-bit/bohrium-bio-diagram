@@ -65,3 +65,7 @@ On the same synthetic feedback graph and table, the previous public release (710
 Reproduce with `python -B verification/check_release.py --output verification-output` from the repository root. To include the historical comparison, add `--previous PATH_TO_710d8841_CHECKOUT`. The submission includes the examples and standalone figure checker. The release verification script runs independently of the drawing CLI. Build receipts and author-side session logs are kept separately from the public Skill.
 
 [Linux verification log and downloadable example figures](https://github.com/wxrunofficial-bit/bohrium-bio-diagram/actions/runs/45827941734)
+
+### Inspect the public demonstration
+
+Open [the editable feedback diagram](examples/feedback-preview.svg) and [the measured verification record](examples/verification-result.json). Both come from the illustrative cases in this repository. The record contains the three repeat hashes, the previous/current comparison, the eight deliberately introduced errors, the rejected CSV inputs and an independent PDF raster check for each output mode. Generate a new record for a new release with the verification command above.
