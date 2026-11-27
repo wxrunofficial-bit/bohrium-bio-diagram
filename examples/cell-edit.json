@@ -1,0 +1,26 @@
+{
+  "case_id": "native-local-edits",
+  "operations": [
+    {
+      "slide": 1,
+      "shape_id": 4,
+      "row": 2,
+      "column": 1,
+      "action": "table_text",
+      "expected": "9.6 ms",
+      "value": "9.8 ms",
+      "source": "Regression fixture, independent readout B",
+      "reason": "Apply the specified correction"
+    },
+    {
+      "slide": 1,
+      "shape_id": 2,
+      "action": "typeface",
+      "expected": null,
+      "value": "Aptos",
+      "script": "latin",
+      "source": "Regression fixture, independent readout B",
+      "reason": "Apply the specified correction"
+    }
+  ]
+}

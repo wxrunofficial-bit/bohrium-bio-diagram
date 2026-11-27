@@ -1,0 +1,14 @@
+{
+  "scope": "Local public fixture only",
+  "topic": "editing",
+  "checked": {
+    "corrected_native_cell": "9.8 ms",
+    "unchanged_slide": 2,
+    "untargeted_zip_members_byte_identical": true,
+    "stale_plan_rejected_before_write": true
+  },
+  "output_contract": {
+    "valid_nested_fields_pass": true,
+    "missing_nested_evidence_and_outside_path_rejected": true
+  }
+}
