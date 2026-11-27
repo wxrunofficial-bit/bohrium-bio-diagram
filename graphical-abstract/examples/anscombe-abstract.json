@@ -1,0 +1,446 @@
+{
+  "case_id": "public-graphical-abstract-anscombe",
+  "title": "Nearly identical fits hide four different patterns",
+  "description": "Four scatterplots with similar regression summaries show a linear cloud, curvature, a response outlier, and a high-leverage point.",
+  "size": [
+    1100,
+    625
+  ],
+  "background": "#F6F3EC",
+  "raster_scale": 2.5,
+  "sources": {
+    "paper-table": {
+      "document": "https://doi.org/10.1080/00031305.1973.10478966",
+      "location": "p. 19, table observations 1–11 and the rounded regression output",
+      "fact": "Four eleven-point sets yield approximately the same rounded line and R² ≈ 0.667."
+    },
+    "figure-1": {
+      "document": "https://doi.org/10.1080/00031305.1973.10478966",
+      "location": "Figs. 1 on pp. 18–19 and Section 3 discussion",
+      "fact": "The first set shows scatter around a line."
+    },
+    "figure-2": {
+      "document": "https://doi.org/10.1080/00031305.1973.10478966",
+      "location": "Figs. 2 on pp. 18–19 and Section 3 discussion",
+      "fact": "The second set shows curvature."
+    },
+    "figure-3": {
+      "document": "https://doi.org/10.1080/00031305.1973.10478966",
+      "location": "Figs. 3 on pp. 18–19 and Section 3 discussion",
+      "fact": "The third set has one high response away from its remaining linear pattern."
+    },
+    "figure-4": {
+      "document": "https://doi.org/10.1080/00031305.1973.10478966",
+      "location": "Figs. 4 on pp. 18–19 and Section 3 discussion",
+      "fact": "In the fourth set one observation is at x=19 and the ten others are at x=8."
+    }
+  },
+  "objects": [
+    {
+      "type": "line",
+      "id": "accent",
+      "x": 46,
+      "y": 43,
+      "u": 132,
+      "v": 43,
+      "color": "#086F75",
+      "width": 3
+    },
+    {
+      "type": "text",
+      "id": "h1",
+      "x": 44,
+      "y": 103,
+      "value": "Nearly identical fits hide",
+      "size": 41,
+      "color": "#192633",
+      "weight": 700,
+      "evidence": [
+        "paper-table"
+      ]
+    },
+    {
+      "type": "text",
+      "id": "h2",
+      "x": 44,
+      "y": 149,
+      "value": "four different patterns",
+      "size": 41,
+      "color": "#192633",
+      "weight": 700,
+      "evidence": [
+        "paper-table"
+      ]
+    },
+    {
+      "type": "line",
+      "id": "delimiter",
+      "x": 432,
+      "y": 195,
+      "u": 432,
+      "v": 530,
+      "color": "#BCC6C3",
+      "width": 1.3
+    },
+    {
+      "type": "text",
+      "id": "stat",
+      "x": 44,
+      "y": 334,
+      "value": "≈ 0.67",
+      "size": 94,
+      "color": "#086F75",
+      "weight": 700,
+      "evidence": [
+        "paper-table"
+      ]
+    },
+    {
+      "type": "text",
+      "id": "stat-label",
+      "x": 52,
+      "y": 374,
+      "value": "R² in all four datasets",
+      "size": 24,
+      "color": "#192633",
+      "weight": 700,
+      "evidence": [
+        "paper-table"
+      ]
+    },
+    {
+      "type": "text",
+      "id": "subtitle1",
+      "x": 52,
+      "y": 439,
+      "value": "The shared fit conceals curvature,",
+      "size": 17,
+      "color": "#4C5D65",
+      "weight": 400,
+      "evidence": [
+        "figure-2"
+      ]
+    },
+    {
+      "type": "text",
+      "id": "subtitle2",
+      "x": 52,
+      "y": 467,
+      "value": "an outlier and a high-leverage point.",
+      "size": 17,
+      "color": "#4C5D65",
+      "weight": 400,
+      "evidence": [
+        "figure-3",
+        "figure-4"
+      ]
+    },
+    {
+      "type": "scatter",
+      "id": "quartet",
+      "x": 470,
+      "y": 205,
+      "w": 583,
+      "h": 334,
+      "sets": [
+        {
+          "label": "I   Linear scatter",
+          "xy": [
+            [
+              10,
+              8.04
+            ],
+            [
+              8,
+              6.95
+            ],
+            [
+              13,
+              7.58
+            ],
+            [
+              9,
+              8.81
+            ],
+            [
+              11,
+              8.33
+            ],
+            [
+              14,
+              9.96
+            ],
+            [
+              6,
+              7.24
+            ],
+            [
+              4,
+              4.26
+            ],
+            [
+              12,
+              10.84
+            ],
+            [
+              7,
+              4.82
+            ],
+            [
+              5,
+              5.68
+            ]
+          ],
+          "guide": [
+            [
+              4,
+              5.000454545454547
+            ],
+            [
+              14,
+              10.001363636363639
+            ]
+          ],
+          "highlight_rows": [],
+          "evidence": [
+            "paper-table",
+            "figure-1"
+          ]
+        },
+        {
+          "label": "II   Curvature",
+          "xy": [
+            [
+              10,
+              9.14
+            ],
+            [
+              8,
+              8.14
+            ],
+            [
+              13,
+              8.74
+            ],
+            [
+              9,
+              8.77
+            ],
+            [
+              11,
+              9.26
+            ],
+            [
+              14,
+              8.1
+            ],
+            [
+              6,
+              6.13
+            ],
+            [
+              4,
+              3.1
+            ],
+            [
+              12,
+              9.13
+            ],
+            [
+              7,
+              7.26
+            ],
+            [
+              5,
+              4.74
+            ]
+          ],
+          "guide": [
+            [
+              4,
+              5.000909090909091
+            ],
+            [
+              14,
+              10.00090909090909
+            ]
+          ],
+          "highlight_rows": [],
+          "evidence": [
+            "paper-table",
+            "figure-2"
+          ]
+        },
+        {
+          "label": "III   Response outlier",
+          "xy": [
+            [
+              10,
+              7.46
+            ],
+            [
+              8,
+              6.77
+            ],
+            [
+              13,
+              12.74
+            ],
+            [
+              9,
+              7.11
+            ],
+            [
+              11,
+              7.81
+            ],
+            [
+              14,
+              8.84
+            ],
+            [
+              6,
+              6.08
+            ],
+            [
+              4,
+              5.39
+            ],
+            [
+              12,
+              8.15
+            ],
+            [
+              7,
+              6.42
+            ],
+            [
+              5,
+              5.73
+            ]
+          ],
+          "guide": [
+            [
+              4,
+              5.001363636363638
+            ],
+            [
+              14,
+              9.998636363636365
+            ]
+          ],
+          "highlight_rows": [
+            3
+          ],
+          "evidence": [
+            "paper-table",
+            "figure-3"
+          ]
+        },
+        {
+          "label": "IV   High leverage",
+          "xy": [
+            [
+              8,
+              6.58
+            ],
+            [
+              8,
+              5.76
+            ],
+            [
+              8,
+              7.71
+            ],
+            [
+              8,
+              8.84
+            ],
+            [
+              8,
+              8.47
+            ],
+            [
+              8,
+              7.04
+            ],
+            [
+              8,
+              5.25
+            ],
+            [
+              19,
+              12.5
+            ],
+            [
+              8,
+              5.56
+            ],
+            [
+              8,
+              7.91
+            ],
+            [
+              8,
+              6.89
+            ]
+          ],
+          "guide": [
+            [
+              8,
+              7.0009999999999994
+            ],
+            [
+              19,
+              12.499999999999998
+            ]
+          ],
+          "highlight_rows": [
+            8
+          ],
+          "evidence": [
+            "paper-table",
+            "figure-4"
+          ]
+        }
+      ],
+      "colors": [
+        "#086F75",
+        "#086F75",
+        "#086F75",
+        "#086F75"
+      ],
+      "xlim": [
+        0,
+        20
+      ],
+      "ylim": [
+        0,
+        14
+      ],
+      "xticks": [
+        0,
+        10,
+        20
+      ],
+      "yticks": [
+        0,
+        7,
+        14
+      ]
+    },
+    {
+      "type": "text",
+      "id": "cite",
+      "x": 46,
+      "y": 595,
+      "value": "Anscombe (1973), Figs. 1–4 and data table. Each panel contains 11 observations.",
+      "size": 14,
+      "color": "#4C5D65",
+      "weight": 400,
+      "evidence": [
+        "paper-table"
+      ]
+    }
+  ]
+}

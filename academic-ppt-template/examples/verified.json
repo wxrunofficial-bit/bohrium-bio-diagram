@@ -1,0 +1,44 @@
+{
+  "case_id": "public-template-example",
+  "status": "ok",
+  "mode": "adapt",
+  "changed_slide_parts": [
+    "ppt/slides/slide1.xml"
+  ],
+  "actual_changes": [
+    {
+      "slide": 1,
+      "shape_id": 2,
+      "run": 0,
+      "action": "text",
+      "expected": "Insert a source-grounded claim",
+      "value": "A rounded fit can hide four patterns",
+      "source": "Anscombe (1973), Figs. 1–4",
+      "reason": "Insert the evidence-led claim into the native title placeholder.",
+      "old": "Insert a source-grounded claim",
+      "member": "ppt/slides/slide1.xml"
+    },
+    {
+      "slide": 1,
+      "shape_id": 4,
+      "run": 0,
+      "action": "text",
+      "expected": "Insert the observed comparand and qualification",
+      "value": "Four datasets, 11 observations each",
+      "source": "Anscombe (1973), p. 19 table",
+      "reason": "Fill the supplied body text zone.",
+      "old": "Insert the observed comparand and qualification",
+      "member": "ppt/slides/slide1.xml"
+    }
+  ],
+  "preserved_zip_members": 42,
+  "preserved_template_parts": 14,
+  "dimensions_emu": {
+    "cx": "9144000",
+    "cy": "6858000",
+    "type": "screen4x3"
+  },
+  "slide_count": 1,
+  "template_source": "Illustrative 4:3 title layout with a native master and footer",
+  "rendering_required": true
+}
