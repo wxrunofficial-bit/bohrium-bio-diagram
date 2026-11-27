@@ -1,0 +1,15 @@
+---
+name: weekly-skill
+description: Create or edit source-grounded biological mechanism and pathway figures with compartments, evidence-linked activity, explicit relation signs, editable SVG and quantitative encodings. 生物机制图与通路图。
+---
+
+# 生物机制图与通路图
+
+Read the actual workorder, `/input/case.json` and its output_contract, the source assets, and the case environment resources. Preserve originals and work under `/app/work`. Write final case artifacts under `/app/output` with stable filenames. Inspect the sources and the rendered output before recording success. Use the checks and references in `references/visual-brief.md`.
+
+1. Read the supplied research material, section and figure caption. Build a claim ledger for every drawn entity and link. Give each molecule or activity a stable ID, compartment and evidence locator. Preserve the exact qualifier and biological context. Differentiate physical association, activated activity, transport, inhibitory sign and proposed connections. Do not infer a direct mechanism from correlation or proximity.
+2. Select the notation needed by the source. In an activity view show the direction of influence; in a process view distinguish entities from the reaction that consumes, modifies or produces them. Adopt SBGN conventions for the applicable meaning, and define any custom stroke or marker in the legend. Keep sign and certainty as separate encodings. Preserve compartment boundaries and use label placement that makes the entering or leaving relation unambiguous. Place the main causal route in visual priority, and route side branches around it. Show the exact phenomenon from the input and omit decorative biology.
+3. For explicit scene art render `python scripts/illustrate.py scene.json /app/work/pathway`. See examples/editorial-scene.json for named ports, compartment layering, positive arrows and proposed inhibitory bar. For a structured evidence graph use `python scripts/pathway.py draw graph.json --case /input/case.json --output /app/work/pathway`. The latter also joins a supplied edge table for calibrated continuous widths with `--edge-table`, audits categorical fills and has an established chart mode. Edit the supplied SVG through `pathway.py edit PLAN --source ORIGINAL --output OUT` using exact preconditions. Preserve all unaffected scientific fields and object semantics.
+4. Parse the final SVG and read back its head forms and ports. Verify inhibition bars, arrow direction, compartment transitions and evidence qualifiers visually against the source. Use a simple axis/grayscale legend for quantitative channels where color alone would be ambiguous. A proposed branch and an inhibiting branch can coincide, but their visual encodings must each be unambiguous.
+
+Write the original case_id and each required field in result.json. Use exact requested nested schema, editable source, rendered previews, evidence, edit log, numeric/semantic checks, and limitations. Fit the file format and asset conventions stated by this case. Record a partial result if unsupported. The public examples exercise the workflow and are independent of the evaluator’s inputs.

@@ -1,0 +1,15 @@
+---
+name: weekly-skill
+description: Generate or revise editable scientific charts from source data with exact point/interval recovery, CSV/XLSX reverse provenance, stable panel framing and controlled presentation edits. 科研数据图表生成与编辑。
+---
+
+# 科研数据图表生成与编辑
+
+Read the actual workorder, `/input/case.json` and its output_contract, the source assets, and the case environment resources. Preserve originals and work under `/app/work`. Write final case artifacts under `/app/output` with stable filenames. Inspect the sources and the rendered output before recording success. Use the checks and references in `references/visual-brief.md`.
+
+1. Inspect the source and target workorder. Choose the display type by the scientific question: direct comparisons, changes over time, distributions, joint variation or a structured heatmap. Record source sheet/range or CSV rows, unit, aggregation, interval type, limits and exclusions. Do not derive missing CIs or sample sizes from rendered bars. Keep missing records distinct from zeros. Do not fit, smooth or average beyond the brief or source justification.
+2. Design the figure for the question and its destination. Open the final dimensions early. Use explicit axes, units and shared comparison scales. Emphasize the intended scientific comparison with restrained hierarchy. Prefer direct names near separable line endpoints; use a compact legend in crowded panels. Provide redundant line patterns or markers and inspect grayscale readability. Use a baseline appropriate for the mark and explanatory labeling for transformations. Choose a diverging palette only with a meaningful center. Typography and grid weight should expose, not compete with, the measurements.
+3. Run `python scripts/figure.py FIGURE.json OUT`. For spreadsheet provenance use `scripts/xlsx_table.py`, and `scripts/lookup.py` to trace an SVG ID or reverse-lookup a source row. Use `scripts/verify.py OUT` to independently recover every numeric mark and check interval and legend semantics. For presentation-only changes rerun the figure, run `python scripts/check_revision.py BASELINE REVISED` and explain any intentionally changed labels or chart views. Use the SVG-only editor for exact localized source edits and keep a precondition plus untouched-element audit.
+4. Inspect SVG/PDF/PNG at actual size, narrow width, and in grayscale, and retain data dictionary and data/source hash. Check direct-label collisions and legends, point and interval endpoints, number formatting, axis transform, tick clipping and font substitutions. If uncertainty appears to be missing or unknown label it. Record design changes and explicit still-unresolved caveats.
+
+Write the original case_id and each required field in result.json. Use exact requested nested schema, editable source, rendered previews, evidence, edit log, numeric/semantic checks, and limitations. Fit the file format and asset conventions stated by this case. Record a partial result if unsupported. The public examples exercise the workflow and are independent of the evaluator’s inputs.

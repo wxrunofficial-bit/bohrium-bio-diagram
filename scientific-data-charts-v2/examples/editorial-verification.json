@@ -1,0 +1,39 @@
+{
+  "case_id": "editorial-assay-demo",
+  "status": "ok",
+  "version": "1.0.0",
+  "input_sha256": "7f0efd51c4657a6c5c1cd9053ffa4bb390c868d37d39c44a1a07d7db554a9fba",
+  "spec_sha256": "dd6d94dc48a84766440b5028144eff63abf87d10709f19a5e79e23b12abc6373",
+  "outputs": [
+    "figure.svg",
+    "figure.pdf",
+    "figure.png",
+    "figure.json",
+    "source.csv",
+    "mapping.json",
+    "reverse.csv"
+  ],
+  "font": "DejaVu Sans",
+  "physical_mm": [
+    169,
+    103
+  ],
+  "raster": {
+    "pixels": [
+      1996,
+      1216
+    ],
+    "dpi": [
+      299.9994,
+      299.9994
+    ],
+    "mode": "RGBA"
+  },
+  "requested_dpi": 300,
+  "matplotlib": "3.11.2",
+  "numpy": "2.5.4",
+  "uncertainty": [],
+  "changes": [],
+  "source_locator": "Synthetic teaching dataset examples/assay.csv. Bounds are illustrative, not inferred from raw replicates.",
+  "human_confirmations": []
+}

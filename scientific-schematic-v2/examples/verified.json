@@ -1,0 +1,65 @@
+{
+  "example": "four-probe",
+  "check": {
+    "elements": {
+      "connections": 6,
+      "entities": 10,
+      "annotations": 1
+    },
+    "exports": {
+      "png_pixels": [
+        1980,
+        1320
+      ],
+      "png_nonblank_check": "passed",
+      "pdf_checks": [
+        "signature",
+        "EOF",
+        "single_page",
+        "raster_nonblank",
+        "aspect_ratio"
+      ],
+      "pdf_raster_check": "passed",
+      "pdf_preview_pixels": [
+        384,
+        256
+      ],
+      "pdf_png_mean_abs_rgb_0_to_255": 7.926
+    }
+  },
+  "negative_controls": {
+    "missing_evidence": "source-drive: no linked evidence",
+    "changed_vector_endpoint": "source-drive: endpoints reversed or swapped",
+    "stale_edit": "0/5/0/1.text: expected 'placeholder text', source has 'Current source I'"
+  },
+  "revision": {
+    "fields_changed": 1,
+    "untouched_svg_nodes": 79,
+    "preview": {
+      "renderer": "matplotlib-svg-subset",
+      "source_viewport": [
+        990,
+        660
+      ],
+      "scale": 2.0,
+      "png_pixels": [
+        1980,
+        1320
+      ],
+      "png_nonblank_check": "passed",
+      "pdf_checks": [
+        "signature",
+        "EOF",
+        "single_page",
+        "raster_nonblank",
+        "aspect_ratio"
+      ],
+      "pdf_raster_check": "passed",
+      "pdf_preview_pixels": [
+        384,
+        256
+      ],
+      "pdf_png_mean_abs_rgb_0_to_255": 7.956
+    }
+  }
+}

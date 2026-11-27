@@ -1,0 +1,47 @@
+{
+  "case_id": "pitot-editorial-v2",
+  "status": "complete",
+  "description": "Cross-section of a Pitot-static probe with physically separate total-pressure and static-pressure passages to a differential pressure sensor.",
+  "source_spec_sha256": "a7836b85ac2c80f7f6651c6422cdd4356dc9af2e6381d0031527da02331415c8",
+  "geometry_checks": {
+    "text": 15,
+    "line": 5,
+    "polygon": 1,
+    "rect": 4,
+    "edge": 2
+  },
+  "uncertainty": [],
+  "artifacts": [
+    "figure.svg",
+    "scene.json",
+    "evidence.json",
+    "figure.pdf",
+    "figure.png"
+  ],
+  "export": {
+    "renderer": "matplotlib-svg-subset",
+    "source_viewport": [
+      1050,
+      623
+    ],
+    "scale": 2.5,
+    "png_pixels": [
+      2625,
+      1558
+    ],
+    "png_nonblank_check": "passed",
+    "pdf_checks": [
+      "signature",
+      "EOF",
+      "single_page",
+      "raster_nonblank",
+      "aspect_ratio"
+    ],
+    "pdf_raster_check": "passed",
+    "pdf_preview_pixels": [
+      384,
+      228
+    ],
+    "pdf_png_mean_abs_rgb_0_to_255": 5.233
+  }
+}

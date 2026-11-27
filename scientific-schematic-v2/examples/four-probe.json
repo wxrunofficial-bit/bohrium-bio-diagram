@@ -1,0 +1,326 @@
+{
+  "case_id": "four-probe-demo",
+  "title": "Four-point probe separates drive from sensing",
+  "subtitle": "Four collinear contacts on a conducting film",
+  "size": [
+    990,
+    660
+  ],
+  "caption": "Sources: Cornell NanoScale Facility, §4.1.04 and UC Davis CNM2, 4 Point Probe.",
+  "legend": {
+    "material": "Drive current",
+    "signal": "Voltage sense",
+    "sequence": "Information flow"
+  },
+  "sources": [
+    {
+      "id": "cornell-4pp",
+      "document": "https://www.cnf.cornell.edu/sites/default/files/inline-files/CNFNanoCoursesSection4.pdf",
+      "location": "Section 4.1.04, four point probe diagram and accompanying text",
+      "statement": "Current is forced through outer probes 1 and 4. Voltage is measured across inner probes 2 and 3."
+    },
+    {
+      "id": "ucd-4pp",
+      "document": "https://cnm2.ucdavis.edu/equipment/4-point-probe",
+      "location": "Instrument description, thin sample qualification",
+      "statement": "The current and voltage readings support sheet-resistance estimation for samples thin relative to probe spacing."
+    }
+  ],
+  "panels": [
+    {
+      "id": "arrangement",
+      "box": [
+        20,
+        80,
+        950,
+        283
+      ],
+      "title": "A   Contact geometry and circuit roles",
+      "nodes": [
+        {
+          "id": "drive",
+          "label": "Current source I",
+          "box": [
+            52,
+            140,
+            185,
+            50
+          ],
+          "style": "material",
+          "evidence": [
+            "cornell-4pp"
+          ]
+        },
+        {
+          "id": "meter",
+          "label": "High-impedance voltmeter",
+          "box": [
+            364,
+            140,
+            260,
+            50
+          ],
+          "style": "signal",
+          "evidence": [
+            "cornell-4pp"
+          ],
+          "ports": {
+            "plus": [
+              0.46,
+              1
+            ],
+            "minus": [
+              1,
+              0.5
+            ]
+          }
+        },
+        {
+          "id": "p1",
+          "label": "P1",
+          "box": [
+            128,
+            247,
+            104,
+            45
+          ],
+          "style": "material",
+          "evidence": [
+            "cornell-4pp"
+          ]
+        },
+        {
+          "id": "p2",
+          "label": "P2",
+          "box": [
+            353,
+            247,
+            104,
+            45
+          ],
+          "style": "signal",
+          "evidence": [
+            "cornell-4pp"
+          ]
+        },
+        {
+          "id": "p3",
+          "label": "P3",
+          "box": [
+            578,
+            247,
+            104,
+            45
+          ],
+          "style": "signal",
+          "evidence": [
+            "cornell-4pp"
+          ]
+        },
+        {
+          "id": "p4",
+          "label": "P4",
+          "box": [
+            803,
+            247,
+            104,
+            45
+          ],
+          "style": "material",
+          "evidence": [
+            "cornell-4pp"
+          ]
+        },
+        {
+          "id": "sample",
+          "label": "Conducting film  ·  four collinear tips",
+          "box": [
+            128,
+            299,
+            779,
+            41
+          ],
+          "style": "sequence",
+          "evidence": [
+            "cornell-4pp"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "id": "source-drive",
+          "source": "drive",
+          "out": "S",
+          "target": "p1",
+          "in": "N",
+          "style": "material",
+          "evidence": [
+            "cornell-4pp"
+          ]
+        },
+        {
+          "id": "return-drive",
+          "source": "p4",
+          "out": "N",
+          "target": "drive",
+          "in": "E",
+          "style": "material",
+          "evidence": [
+            "cornell-4pp"
+          ],
+          "via": [
+            [
+              855,
+              128
+            ],
+            [
+              249,
+              128
+            ],
+            [
+              249,
+              165
+            ]
+          ]
+        },
+        {
+          "id": "sense-plus",
+          "source": "p2",
+          "out": "N",
+          "target": "meter",
+          "in": "plus",
+          "style": "signal",
+          "evidence": [
+            "cornell-4pp"
+          ],
+          "via": [
+            [
+              405,
+              212
+            ],
+            [
+              483.6,
+              212
+            ]
+          ]
+        },
+        {
+          "id": "sense-minus",
+          "source": "p3",
+          "out": "N",
+          "target": "meter",
+          "in": "E",
+          "style": "signal",
+          "evidence": [
+            "cornell-4pp"
+          ],
+          "via": [
+            [
+              630,
+              220
+            ],
+            [
+              679,
+              220
+            ],
+            [
+              679,
+              165
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "infer",
+      "box": [
+        20,
+        385,
+        950,
+        225
+      ],
+      "title": "B   Measurement-to-quantity relationship",
+      "nodes": [
+        {
+          "id": "current",
+          "label": "Applied current I",
+          "box": [
+            52,
+            469,
+            242,
+            61
+          ],
+          "style": "material",
+          "evidence": [
+            "cornell-4pp"
+          ]
+        },
+        {
+          "id": "diff",
+          "label": "Measured V₂ − V₃",
+          "box": [
+            371,
+            469,
+            239,
+            61
+          ],
+          "style": "signal",
+          "evidence": [
+            "cornell-4pp"
+          ]
+        },
+        {
+          "id": "rs",
+          "label": "Sheet resistance\nwith geometry correction",
+          "box": [
+            683,
+            457,
+            252,
+            85
+          ],
+          "style": "sequence",
+          "evidence": [
+            "ucd-4pp"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "id": "given",
+          "source": "current",
+          "out": "E",
+          "target": "diff",
+          "in": "W",
+          "style": "sequence",
+          "evidence": [
+            "cornell-4pp"
+          ]
+        },
+        {
+          "id": "inference",
+          "source": "diff",
+          "out": "E",
+          "target": "rs",
+          "in": "W",
+          "style": "sequence",
+          "evidence": [
+            "ucd-4pp"
+          ]
+        }
+      ],
+      "callouts": [
+        {
+          "id": "domain",
+          "text": "Thin conducting film relative to probe spacing. Use the source-appropriate geometric factor.",
+          "at": [
+            52,
+            572
+          ],
+          "evidence": [
+            "ucd-4pp"
+          ]
+        }
+      ]
+    }
+  ]
+}

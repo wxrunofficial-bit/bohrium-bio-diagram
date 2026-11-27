@@ -1,0 +1,347 @@
+{
+  "case_id": "nasa-pitot-demo",
+  "title": "Pitot-static airspeed measurement",
+  "subtitle": "Physical pressure paths and the downstream measurement workflow",
+  "size": [
+    990,
+    665
+  ],
+  "caption": "Source: NASA Glenn Research Center, Pitot–Static Tube–Speedometer. Schematic, not to scale.",
+  "legend": {
+    "pressure": "Pressure connection",
+    "signal": "Readout / data",
+    "sequence": "Operation order"
+  },
+  "sources": [
+    {
+      "id": "nasa-ports",
+      "document": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/pitot-static-tube-speedometer/",
+      "location": "Original schematic and Pitot-Static Tubes section",
+      "statement": "A forward center opening receives total pressure; outer holes connect separately to the static pressure side."
+    },
+    {
+      "id": "nasa-readout",
+      "document": "https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/pitot-static-tube-speedometer/",
+      "location": "Pressure transducer and Speed Calculation sections",
+      "statement": "The transducer measures the difference. Under the stated assumptions V² = 2(pt − ps)/ρ."
+    }
+  ],
+  "panels": [
+    {
+      "id": "setup",
+      "box": [
+        20,
+        80,
+        950,
+        285
+      ],
+      "title": "A   Apparatus and pressure ports",
+      "nodes": [
+        {
+          "id": "pitot",
+          "label": "Forward opening\nTotal pressure pₜ",
+          "box": [
+            48,
+            147,
+            205,
+            72
+          ],
+          "style": "pressure",
+          "evidence": [
+            "nasa-ports"
+          ],
+          "kind": "port",
+          "ports": {
+            "pt": [
+              1,
+              0.5
+            ]
+          }
+        },
+        {
+          "id": "static",
+          "label": "Side openings\nStatic pressure pₛ",
+          "box": [
+            48,
+            257,
+            205,
+            72
+          ],
+          "style": "pressure",
+          "evidence": [
+            "nasa-ports"
+          ],
+          "kind": "port",
+          "ports": {
+            "ps": [
+              1,
+              0.5
+            ]
+          }
+        },
+        {
+          "id": "transducer",
+          "label": "Differential transducer",
+          "box": [
+            438,
+            151,
+            239,
+            172
+          ],
+          "style": "signal",
+          "evidence": [
+            "nasa-ports",
+            "nasa-readout"
+          ],
+          "kind": "instrument",
+          "ports": {
+            "high": [
+              0,
+              0.18604651162790697
+            ],
+            "low": [
+              0,
+              0.8255813953488372
+            ],
+            "readout": [
+              1,
+              0.5
+            ]
+          }
+        },
+        {
+          "id": "daq",
+          "label": "Measured Δp\npₜ − pₛ  [Pa]",
+          "box": [
+            766,
+            198,
+            176,
+            78
+          ],
+          "style": "signal",
+          "evidence": [
+            "nasa-readout"
+          ],
+          "kind": "data",
+          "ports": {
+            "read": [
+              0,
+              0.5
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "total",
+          "source": "pitot",
+          "out": "pt",
+          "target": "transducer",
+          "in": "high",
+          "style": "pressure",
+          "evidence": [
+            "nasa-ports"
+          ]
+        },
+        {
+          "id": "ambient",
+          "source": "static",
+          "out": "ps",
+          "target": "transducer",
+          "in": "low",
+          "style": "pressure",
+          "evidence": [
+            "nasa-ports"
+          ]
+        },
+        {
+          "id": "delta",
+          "source": "transducer",
+          "out": "readout",
+          "target": "daq",
+          "in": "read",
+          "style": "signal",
+          "evidence": [
+            "nasa-readout"
+          ]
+        }
+      ],
+      "callouts": [
+        {
+          "id": "high-label",
+          "text": "High side",
+          "at": [
+            277,
+            173
+          ],
+          "evidence": [
+            "nasa-ports"
+          ]
+        },
+        {
+          "id": "low-label",
+          "text": "Low side",
+          "at": [
+            277,
+            283
+          ],
+          "evidence": [
+            "nasa-ports"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "work",
+      "box": [
+        20,
+        385,
+        950,
+        226
+      ],
+      "title": "B   Measurement and calculation",
+      "nodes": [
+        {
+          "id": "align",
+          "label": "Align inlet\nwith the flow",
+          "box": [
+            48,
+            455,
+            201,
+            70
+          ],
+          "style": "sequence",
+          "evidence": [
+            "nasa-ports"
+          ],
+          "kind": "process",
+          "ports": {
+            "next": [
+              1,
+              0.5
+            ]
+          }
+        },
+        {
+          "id": "sense",
+          "label": "Read pressure\ndifference",
+          "box": [
+            279,
+            455,
+            194,
+            70
+          ],
+          "style": "sequence",
+          "evidence": [
+            "nasa-readout"
+          ],
+          "kind": "process",
+          "ports": {
+            "prev": [
+              0,
+              0.5
+            ],
+            "next": [
+              1,
+              0.5
+            ]
+          }
+        },
+        {
+          "id": "density",
+          "label": "Use local\ndensity ρ",
+          "box": [
+            503,
+            455,
+            196,
+            70
+          ],
+          "style": "sequence",
+          "evidence": [
+            "nasa-readout"
+          ],
+          "kind": "process",
+          "ports": {
+            "prev": [
+              0,
+              0.5
+            ],
+            "next": [
+              1,
+              0.5
+            ]
+          }
+        },
+        {
+          "id": "velocity",
+          "label": "Compute airspeed\nV = √(2Δp/ρ)",
+          "box": [
+            730,
+            455,
+            210,
+            70
+          ],
+          "style": "signal",
+          "evidence": [
+            "nasa-readout"
+          ],
+          "kind": "data",
+          "ports": {
+            "prev": [
+              0,
+              0.5
+            ]
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "s1",
+          "source": "align",
+          "out": "next",
+          "target": "sense",
+          "in": "prev",
+          "style": "sequence",
+          "evidence": [
+            "nasa-readout"
+          ]
+        },
+        {
+          "id": "s2",
+          "source": "sense",
+          "out": "next",
+          "target": "density",
+          "in": "prev",
+          "style": "sequence",
+          "evidence": [
+            "nasa-readout"
+          ]
+        },
+        {
+          "id": "s3",
+          "source": "density",
+          "out": "next",
+          "target": "velocity",
+          "in": "prev",
+          "style": "sequence",
+          "evidence": [
+            "nasa-readout"
+          ]
+        }
+      ],
+      "callouts": [
+        {
+          "id": "scope",
+          "text": "Use the incompressible Bernoulli approximation for this calculation.",
+          "at": [
+            50,
+            569
+          ],
+          "evidence": [
+            "nasa-readout"
+          ]
+        }
+      ]
+    }
+  ]
+}

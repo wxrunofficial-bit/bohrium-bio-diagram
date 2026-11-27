@@ -1,0 +1,14 @@
+{
+  "case_id": "four-probe-label-edit",
+  "scale": 2,
+  "operations": [
+    {
+      "id": "data-sample-text-0",
+      "field": "text",
+      "expected": "Conducting film  ·  four collinear tips",
+      "value": "Conductive film  ·  four collinear probes",
+      "source": "Illustrative revision request. Cornell NanoScale Facility Section 4.1.04.",
+      "reason": "Use the source terminology for the contact arrangement."
+    }
+  ]
+}
