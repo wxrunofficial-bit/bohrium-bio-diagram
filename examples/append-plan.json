@@ -1,0 +1,11 @@
+{
+  "slides": [
+    {
+      "layout": "ppt/slideLayouts/slideLayout2.xml",
+      "text": {
+        "0": "The reference layout remains editable",
+        "1": "14 observations\nTwo conditions"
+      }
+    }
+  ]
+}

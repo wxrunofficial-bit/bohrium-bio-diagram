@@ -1,0 +1,14 @@
+{
+  "scope": "Local public fixture only",
+  "topic": "template",
+  "checked": {
+    "potx_to_pptx": true,
+    "original_slides": 2,
+    "native_layout": "ppt/slideLayouts/slideLayout2.xml",
+    "masters_themes_and_original_slides_byte_identical": true
+  },
+  "output_contract": {
+    "valid_nested_fields_pass": true,
+    "missing_nested_evidence_and_outside_path_rejected": true
+  }
+}

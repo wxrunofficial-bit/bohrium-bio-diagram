@@ -1,17 +1,17 @@
-# 科研绘图与学术汇报 Skills
+# 学术 PPT 模板与格式适配
 
-这里收录九个独立的 Bohrium 赛题项目。每个链接直接打开对应题的 Skill，所在目录含该题的脚本、示例和说明。首发与改版链接对应不同版本。
+Bohrium challenge [ppt-710fbc72](https://play.bohrium.com/challenge/ppt-710fbc72).
+Start with [SKILL.md](SKILL.md). Match a supplied PPTX or POTX by filling its editable placeholders or creating slides attached to its original layout. The runnable scripts are under [scripts](scripts).
 
-| 赛题 | Bohrium | 首发版本 | 改版 |
-| --- | --- | --- | --- |
-| 生物机制图与通路图 | [challenge-83d4f050](https://play.bohrium.com/challenge/challenge-83d4f050) | [首发 Skill](SKILL.md) | [改版 Skill](biological-pathways-v2/SKILL.md) |
-| 科研数据图表生成与编辑 | [challenge-1bd90d8a](https://play.bohrium.com/challenge/challenge-1bd90d8a) | [首发 Skill](scientific-data-charts/SKILL.md) | [改版 Skill](scientific-data-charts-v2/SKILL.md) |
-| 科研示意图生成与编辑 | [challenge-98e5a474](https://play.bohrium.com/challenge/challenge-98e5a474) | [首发 Skill](scientific-schematic/SKILL.md) | [改版 Skill](scientific-schematic-v2/SKILL.md) |
-| 实验装置与技术路线图 | [challenge-9034312d](https://play.bohrium.com/challenge/challenge-9034312d) | [首发 Skill](apparatus-workflow/SKILL.md) | [改版 Skill](apparatus-workflow-v2/SKILL.md) |
-| 图形摘要 | [graphical-abstract-7030fff2](https://play.bohrium.com/challenge/graphical-abstract-7030fff2) | [首发 Skill](graphical-abstract/SKILL.md) |  |
-| 论文转学术 PPT | [ppt-c7b80f0d](https://play.bohrium.com/challenge/ppt-c7b80f0d) | [首发 Skill](paper-to-presentation/SKILL.md) |  |
-| 学术 PPT 生成与编辑 | [ppt-6ad93034](https://play.bohrium.com/challenge/ppt-6ad93034) | [首发 Skill](academic-ppt-editing/SKILL.md) |  |
-| 学术汇报内容组织 | [challenge-20870c35](https://play.bohrium.com/challenge/challenge-20870c35) | [首发 Skill](academic-presentation-story/SKILL.md) |  |
-| 学术 PPT 模板与格式适配 | [ppt-710fbc72](https://play.bohrium.com/challenge/ppt-710fbc72) | [首发 Skill](academic-ppt-template/SKILL.md) |  |
+## Reproduce
 
-[生物机制图首发版使用说明](BIO-PATHWAY-V1.md)
+Install Python dependencies from `requirements.txt` if needed. Use your own template with the layout and placeholder indices returned by the first command.
+
+```sh
+python scripts/fill_template.py inspect supplied.potx
+python scripts/fill_template.py build supplied.potx plan.json final.pptx
+```
+
+See [the plan format](references/template-plan.md). The script appends text slides and keeps the template's canvas, layouts, theme and master objects. Use the native presenter for complete rendering, editing charts and creating notes on new slides. For editing objects already present, run `python scripts/edit_deck.py inspect original.pptx`, then use the `adapt` command with the requested existing slide objects.
+
+[Verification](examples/regression-verified.json) used an independent 4:3 template. The new slide opens with its real editable placeholders. The original slides, notes, layouts and masters stayed byte-identical. Judge the final render against the actual supplied template for logos, fonts, footers and numbering. Design sources appear in [references/design.md](references/design.md).
